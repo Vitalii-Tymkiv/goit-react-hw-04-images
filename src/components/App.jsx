@@ -8,6 +8,7 @@ import { Button } from './UI/Button';
 import { Error } from './UI/Error';
 import { fetchImg } from '../servises/APIservise';
 import { scroll, scrollOptions } from '../servises/Scroll';
+import toast, { Toaster } from 'react-hot-toast';
 
 export const App = () => {
   const [images, setImages] = useState([]);
@@ -22,6 +23,7 @@ export const App = () => {
     setQuery(query);
     setImages([]);
     setCurrentPage(1);
+    setShowButton(false);
   };
 
   const handleLoadMore = () => {
@@ -59,6 +61,20 @@ export const App = () => {
   }, [query, currentPage]);
 
   useEffect(() => {
+    if (totalPhotos === 0) {
+      toast.error('Please, enter correct query!', {
+        duration: 2000,
+        style: {
+          border: '1px solid #3f51b5',
+          padding: '16px',
+          color: '#3f51b5',
+          width: '400px',
+        },
+      });
+    }
+  }, [totalPhotos]);
+
+  useEffect(() => {
     scroll.scrollToBottom(scrollOptions);
   }, [images]);
 
@@ -66,11 +82,10 @@ export const App = () => {
     <Layout>
       <SearchBar onSubmit={handleSubmitSearchBar} />
       {error && <Error>{error}</Error>}
-      {totalPhotos === 0 && <Error>{'Please, enter correct query!'}</Error>}
       {images.length > 0 && <ImageGalleryList images={images} />}
       {isLoading && <Spinner />}
       {showButton && <Button onClick={handleLoadMore} />}
-
+      <Toaster position="top-left" />
       <GlobalStyle />
     </Layout>
   );

@@ -13,9 +13,10 @@ export const SearchBar = ({ onSubmit }) => {
 
   const handleFormSubmit = event => {
     event.preventDefault();
+    console.log(event.target.elements.search.value);
 
     if (query.trim() === '') {
-      toast.error('Enter a search query', {
+      return toast.error('Enter a search query', {
         duration: 2000,
         style: {
           border: '1px solid #3f51b5',
@@ -24,8 +25,8 @@ export const SearchBar = ({ onSubmit }) => {
           width: '400px',
         },
       });
-      return;
     }
+
     onSubmit(query);
     setQuery('');
   };
