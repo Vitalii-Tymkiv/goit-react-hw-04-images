@@ -13,7 +13,6 @@ export const SearchBar = ({ onSubmit }) => {
 
   const handleFormSubmit = event => {
     event.preventDefault();
-    console.log(event.target.elements.search.value);
 
     if (query.trim() === '') {
       return toast.error('Enter a search query', {
